@@ -1,5 +1,7 @@
+use lazy_static::lazy_static;
 use crate::error::Error;
 use crate::core::sizage::Sizage;
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub enum MatterCodex {
@@ -80,9 +82,20 @@ impl Size for MatterCodex {
     type Err = Error;
 }
 
+lazy_static!{
+    static ref HARDS: HashMap<char, u16> = [
+        ('A', 1), ('B', 1), ('C', 1), ('D', 1), ('E', 1), ('F', 1), ('G', 1),
+        ('H', 1), ('I', 1), ('J', 1), ('K', 1), ('L', 1), ('M', 1), ('N', 1), ('O', 1), ('P', 1), ('Q', 1), ('R', 1),
+        ('S', 1), ('T', 1), ('U', 1), ('V', 1), ('W', 1), ('X', 1), ('Y', 1), ('Z', 1), ('a', 1), ('b', 1), ('c', 1),
+        ('d', 1), ('e', 1), ('f', 1), ('g', 1), ('h', 1), ('i', 1), ('j', 1), ('k', 1), ('l', 1), ('m', 1), ('n', 1),
+        ('o', 1), ('p', 1), ('q', 1), ('r', 1), ('s', 1), ('t', 1), ('u', 1), ('v', 1), ('w', 1), ('x', 1), ('y', 1),
+        ('z', 1), ('0', 2), ('1', 4), ('2', 4), ('3', 4), ('4', 2), ('5', 2), ('6', 2), ('7', 4), ('8', 4), ('9', 4)
+    ].iter().copied().collect();
+}
+
 #[cfg(test)]
 mod matter_codex_tests {
-    use crate::core::matter::{MatterCodex, Size};
+    use crate::core::matter::{HARDS, MatterCodex, Size};
 
     #[test]
     fn test_codes() {
@@ -159,5 +172,13 @@ mod matter_codex_tests {
         assert_eq!(s.ss, 0);
         assert_eq!(s.fs, 100);
         assert_eq!(s.ls, 0);
+    }
+
+    #[test]
+    fn test_hards() {
+        assert_eq!(HARDS.get(&'A').unwrap(), &1);
+        assert_eq!(HARDS.get(&'1').unwrap(), &4);
+        assert_eq!(HARDS.get(&'5').unwrap(), &2);
+        assert_eq!(HARDS.get(&'7').unwrap(), &4);
     }
 }
