@@ -1,7 +1,23 @@
+use std;
+use std::fmt::{self, Display, Formatter};
+
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+use crate::error::error::Error::Message;
+
+#[derive(Clone, Debug, PartialEq)]
 pub enum Error {
-    #[error("MatterError: {0}")]
-    MatterError(String),
+    Message(String),
+    MatterError,
 }
+
+impl Display for Error {
+    fn fmt(&self, formatter: &mut Formatter) -> fmt::Result {
+        match self {
+            Message(msg) => formatter.write_str(msg),
+            matter_error => formatter.write_str("matter error"),
+        }
+    }
+}
+
+impl std::error::Error for Error {}

@@ -1,5 +1,4 @@
-use std::fmt::Error;
-
+use crate::error::Error;
 use crate::core::sizage::Sizage;
 
 #[derive(Debug)]
@@ -57,7 +56,7 @@ impl Matter {
 
 
 pub trait Size {
-    fn size(&self) -> Sizage;
+    fn size(&self) -> Result<Sizage, Self::Err>;
     type Err;
 }
 
@@ -101,6 +100,64 @@ mod matter_codex_tests {
 
     #[test]
     fn test_size() {
-        println!("{}", MatterCodex::Ed25519Seed.size())
+        let mut s = MatterCodex::Ed25519Seed.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 44);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::Ed25519N.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 44);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::X25519.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 44);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::Ed25519.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 44);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::Blake3_256.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 44);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::X25519Private.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 44);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::X25519CipherSeed.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 124);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::X25519CipherSalt.size().unwrap();
+        assert_eq!(s.hs, 2);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 24);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::Salt128.size().unwrap();
+        assert_eq!(s.hs, 1);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 88);
+        assert_eq!(s.ls, 0);
+
+        s = MatterCodex::Ed25519Sig.size().unwrap();
+        assert_eq!(s.hs, 4);
+        assert_eq!(s.ss, 0);
+        assert_eq!(s.fs, 100);
+        assert_eq!(s.ls, 0);
     }
 }
