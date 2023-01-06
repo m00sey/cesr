@@ -10,11 +10,6 @@ pub struct Sizage {
 
 impl Sizage {
     pub fn new(hs: u16, ss: u16, fs: u16, ls: u16) -> Sizage {
-        Self {
-            hs,
-            ss,
-            ls,
-            fs,
-        }
+        Self { hs, ss, ls, fs }
     }
 }
